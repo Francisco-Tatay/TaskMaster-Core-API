@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿
+using Microsoft.EntityFrameworkCore;
 using TaskManagerPro.TaskManagerPro.Interfaces;
 using TaskManagerPro.TaskMasterPro.Domain;
 
@@ -6,7 +7,6 @@ namespace TaskManagerPro.TaskMasterPro.Infrastructure.Repositories;
 
 public class TaskRepository : ITaskRepository
 {
-    //Server=172.17.190.201;Port=3306;Database=TaskMasterDb;Uid=root;Pwd=Ocap1204
     private readonly AppDbContext _context;
 
     public TaskRepository(AppDbContext context)

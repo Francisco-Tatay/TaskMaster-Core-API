@@ -1,4 +1,6 @@
-﻿using TaskManagerPro.TaskMasterPro.Domain;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using TaskManagerPro.TaskMasterPro.Domain;
 
 namespace TaskManagerPro.TaskManagerPro.Interfaces;
 

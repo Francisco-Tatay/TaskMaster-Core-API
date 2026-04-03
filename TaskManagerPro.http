@@ -4,3 +4,12 @@ GET {{TaskManagerPro_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+POST {{TaskManagerPro_HostAddress}}/taskManagerPro/Task
+Content-Type: application/json
+{
+  "title": "Aprender Arquitectura Hexagonal",
+  "description": "Terminar el backend con Francisco de IA",
+  "userId": 1
+}
+###
+GET {{TaskManagerPro_HostAddress}}/taskManagerPro/Task/1
