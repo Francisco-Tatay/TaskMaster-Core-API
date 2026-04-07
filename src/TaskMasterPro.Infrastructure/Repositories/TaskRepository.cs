@@ -1,9 +1,7 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TaskManagerPro.TaskManagerPro.Interfaces;
 using TaskManagerPro.TaskMasterPro.Domain;
-
-namespace TaskManagerPro.TaskMasterPro.Infrastructure.Repositories;
+using TaskManagerPro.TaskMasterPro.Infrastructure;
 
 public class TaskRepository : ITaskRepository
 {
@@ -14,26 +12,37 @@ public class TaskRepository : ITaskRepository
         _context = context;
     }
 
-    public async Task<TaskEntity?> GetByIdAsync(int id) => await _context.Task.FindAsync(id);
-
-    public async Task<IEnumerable<TaskEntity>> GetAllByUserIdAsync(int userId)
+    // 1. Buscamos por GUID
+    public async Task<TaskEntity?> GetByIdAsync(Guid id) 
     {
-        return await _context.Task.Where(t => t.UserId == userId).ToListAsync();
+        return await _context.Task.FindAsync(id);
     }
 
+    // 2. Traemos todas las tareas de un usuario (Usando GUID)
+    public async Task<IEnumerable<TaskEntity>> GetAllByUserIdAsync(Guid userId)
+    {
+        // El '==' aquí ya no falla porque ambos son Guid
+        return await _context.Task
+            .Where(t => t.UserId == userId)
+            .ToListAsync();
+    }
+
+    // 3. Guardar una ENTIDAD (No un DTO)
     public async Task AddAsync(TaskEntity task)
     {
         await _context.Task.AddAsync(task);
         await _context.SaveChangesAsync();
     }
 
+    // 4. Actualizar una ENTIDAD
     public async Task UpdateAsync(TaskEntity task)
     {
         _context.Task.Update(task);
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    // 5. Borrar por GUID
+    public async Task DeleteAsync(Guid id)
     {
         var task = await GetByIdAsync(id);
         if (task != null)
@@ -41,5 +50,15 @@ public class TaskRepository : ITaskRepository
             _context.Task.Remove(task);
             await _context.SaveChangesAsync();
         }
+    }
+
+    // 6. Paginación (Si la vas a usar, que devuelva ENTIDADES)
+    public async Task<List<TaskEntity>> GetTaskPagedAsync(Guid userId, int page, int pageSize)
+    {
+        return await _context.Task
+            .Where(t => t.UserId == userId)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
     }
 }

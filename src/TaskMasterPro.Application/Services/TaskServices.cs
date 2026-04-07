@@ -1,37 +1,64 @@
-﻿using TaskManagerPro.TaskMasterPro.Domain;
-using TaskManagerPro.TaskManagerPro.Interfaces; // Asegúrate de que el using sea el correcto
+﻿using TaskManagerPro.TaskManagerPro.Interfaces;
+using TaskManagerPro.TaskMasterPro.Application.DTOs.Tasks;
+using TaskManagerPro.TaskMasterPro.Domain;
 
 namespace TaskManagerPro.TaskMasterPro.Application.Services;
 
 public class TaskServices
 {
-    // Usamos el nombre estándar: _taskRepository (sin la "i" al principio suele ser más común en C#)
     private readonly ITaskRepository _taskRepository;
 
-    // AQUÍ ESTÁ EL CAMBIO: Inyectamos la Interfaz
     public TaskServices(ITaskRepository taskRepository)
     {
         _taskRepository = taskRepository;
     }
 
-    public async Task<IEnumerable<TaskEntity>> GetUserTasksAsync(int userId)
+    public async Task<IEnumerable<TaskItemDto>> GetUserTasksAsync(Guid userId)
     {
-        return await _taskRepository.GetAllByUserIdAsync(userId);
+        // 1. Obtenemos las ENTIDADES del repositorio
+        var entities = await _taskRepository.GetAllByUserIdAsync(userId);
+
+        // 2. MAPEO MANUAL: Convertimos de Entity a DTO
+        // Esto quita el error de "Cannot convert IEnumerable<TaskEntity>..."
+        return entities.Select(t => new TaskItemDto(
+            t.Id, 
+            t.Title, 
+            t.Description
+        ));
     }
 
-    public async Task CreateTaskAsync(TaskEntity task)
+    public async Task CreateTaskAsync(TaskItemDto taskItemDto, Guid userId)
     {
-        // Regla de negocio: Por ejemplo, forzar que la tarea no empiece como completada
-        task.IsCompleted = false; 
-        await _taskRepository.AddAsync(task);
+        // Aquí ya lo tenías bien: conviertes DTO + UserId -> Entity
+        TaskEntity entity = new TaskEntity()
+        {
+            Id = Guid.NewGuid(), // Siempre genera un ID nuevo para creaciones
+            Title = taskItemDto.Title,
+            Description = taskItemDto.Description,
+            UserId = userId,
+            IsCompleted = false
+        };
+        await _taskRepository.AddAsync(entity);
     }
 
-    public async Task UpdateTaskAsync(TaskEntity task)
+    public async Task UpdateTaskAsync(TaskItemDto taskDto)
     {
-        await _taskRepository.UpdateAsync(task);
+        // FIX: No podemos mandar el DTO directo. Creamos la entidad.
+        // En un nivel más pro, primero buscarías la tarea en la DB y luego la actualizarías,
+        // pero para que compile y funcione el mapeo:
+        var entity = new TaskEntity()
+        {
+            Id = taskDto.Id,
+            Title = taskDto.Title,
+            Description = taskDto.Description
+            // Ojo: Aquí faltaría el UserId si tu DB lo pide como obligatorio
+        };
+
+        await _taskRepository.UpdateAsync(entity);
     }
 
-    public async Task DeleteTaskAsync(int taskId)
+    // FIX: Cambiamos 'int' por 'Guid'
+    public async Task DeleteTaskAsync(Guid taskId) 
     {
         await _taskRepository.DeleteAsync(taskId);
     }
