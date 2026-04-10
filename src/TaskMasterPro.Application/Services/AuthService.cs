@@ -47,17 +47,10 @@ public class AuthService
             };
             await _userRepository.AddAsync(user);
 
-            // 3. ¡AQUÍ ESTÁ LA LLAVE! Generamos los tokens de una vez
-            var accessToken = _generateTokenService.GenerateTokensAsync(user); // La de 15 min
-          //  var refreshToken = _generateTokenService.CreateRefreshToken(); // La de larga duración
+            // 3. Generamos los tokens de una vez (GenerateTokensAsync ya guarda el refresh token)
+            var authResponse = await _generateTokenService.GenerateTokensAsync(user);
 
-            // 4. Guardamos el Refresh Token en la DB (tu nueva tabla)
-            await _refreshTokenRepository.SaveAsync(user.Id, accessToken);
-
-            return new AuthResponseDto {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken
-            };
+            return authResponse;
         }
         catch (Exception) {
             throw new Exception("Error en el proceso de registro.");
