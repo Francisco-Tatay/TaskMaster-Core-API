@@ -7,4 +7,5 @@ namespace TaskManagerPro.TaskMasterPro.Application.Common.Interfaces;
 public interface ITokenService
 {
     Task<AuthResponseDto> GenerateTokensAsync(User user);
+    
 }

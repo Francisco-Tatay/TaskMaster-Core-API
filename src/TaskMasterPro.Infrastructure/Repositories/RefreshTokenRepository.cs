@@ -9,12 +9,13 @@ public class RefreshTokenRepository : IRefreshTokenRepository
 {
     private readonly AppDbContext _context;
 
+    // ReSharper disable once ConvertToPrimaryConstructor
     public RefreshTokenRepository(AppDbContext context)
     {
         _context = context;
     }
 
-    public async Task SaveAsync(RefreshToken refreshToken)
+    public async Task SaveAsync(User user,RefreshToken refreshToken)
     {
         await _context.Set<RefreshToken>().AddAsync(refreshToken);
         await _context.SaveChangesAsync();
@@ -23,5 +24,14 @@ public class RefreshTokenRepository : IRefreshTokenRepository
     public async Task<RefreshToken?> GetByTokenAsync(string token)
     {
         return await _context.Set<RefreshToken>().Include(rt => rt.User).FirstOrDefaultAsync(rt => rt.Token == token);
+    }
+
+    public async Task<User?> DeleteTokensAsync(User user)
+    {
+        await _context.RefreshToken
+            .Where(t => t.UserId == user.Id)
+            .ExecuteDeleteAsync(); // Borra directamente en la DB sin cargar nada
+
+        return user;
     }
 }

@@ -44,7 +44,7 @@ builder.Services.AddSingleton<IIdGenerator, IdGenerator>();
 // Estos orquestan la lógica que consumen los controladores
 builder.Services.AddScoped<TaskServices>();
 builder.Services.AddScoped<AuthService>(); // <-- Faltaba este cable para el AuthController
-
+builder.Services.AddScoped<GenerateTokenService>();
 // =========================================================================
 // 5. CONFIGURACIÓN DE AUTENTICACIÓN Y JWT
 // =========================================================================

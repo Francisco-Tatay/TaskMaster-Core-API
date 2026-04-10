@@ -37,11 +37,26 @@ public class AuthController : ControllerBase
 
 
     [HttpPost("register")]
-    public async Task<IActionResult> register()
+    public async Task<IActionResult> Register(RegisterRecordDto? registerRecordDto)
     {
-        
-        
-        
+        if (registerRecordDto == null) return BadRequest("register data is required.");
+        if (string.IsNullOrWhiteSpace(registerRecordDto.Email) ||
+            string.IsNullOrWhiteSpace(registerRecordDto.Password) ||
+            string.IsNullOrWhiteSpace(registerRecordDto.Passwordverfication))
+            return BadRequest("Information invalid try again");
+        try
+        {
+            var isValid = await _authService.Register(registerRecordDto);
+            if (isValid==null) return Conflict("Try again if the problem persists contact support");
+            return Ok(isValid);
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("error " + e.Message);
+        }
+
+
         return null;
     }
 }
