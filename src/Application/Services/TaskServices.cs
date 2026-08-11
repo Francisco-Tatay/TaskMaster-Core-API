@@ -1,4 +1,5 @@
-﻿using TaskManagerPro.TaskManagerPro.Interfaces;
+﻿using TaskManagerPro.Application.DTOs.Tasks;
+using TaskManagerPro.TaskManagerPro.Interfaces;
 using TaskManagerPro.TaskMasterPro.Application.DTOs.Tasks;
 using TaskManagerPro.TaskMasterPro.Domain;
 using Task = TaskManagerPro.TaskMasterPro.Domain.Task;
@@ -49,14 +50,10 @@ public class TaskServices
         // FIX: No podemos mandar el DTO directo. Creamos la entidad.
         // En un nivel más pro, primero buscarías la tarea en la DB y luego la actualizarías,
         // pero para que compile y funcione el mapeo:
-        var entity = new Task()
-        {
-            Id = taskDto.Id,
-            Title = taskDto.Title,
-            Description = taskDto.Description
-            // Ojo: Aquí faltaría el UserId si tu DB lo pide como obligatorio
-        };
-
+        var entity = await _taskRepository.GetByIdAsync(taskDto.Id);
+        if (entity == null) return;
+        entity.Title = taskDto.Title;
+        entity.Description = taskDto.Description;
         await _taskRepository.UpdateAsync(entity);
     }
 

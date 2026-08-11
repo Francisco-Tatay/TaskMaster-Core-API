@@ -1,4 +1,4 @@
-﻿namespace TaskManagerPro.TaskMasterPro.Application.DTOs.Tasks;
+﻿namespace TaskManagerPro.Application.DTOs.Tasks;
 
 public record TaskItemDto(
     Guid Id,

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TaskManagerPro.Application.DTOs.Tasks;
 using TaskManagerPro.TaskMasterPro.Application.DTOs.Tasks;
 using TaskManagerPro.TaskMasterPro.Application.Services;
 

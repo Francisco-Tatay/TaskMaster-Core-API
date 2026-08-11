@@ -1,13 +1,14 @@
 ﻿using TaskManagerPro.TaskManagerPro.Interfaces;
-using TaskManagerPro.TaskMasterPro.Application.Common.Interfaces; // Para ITokenService
+using TaskManagerPro.TaskMasterPro.Application.Common.Interfaces;
 using TaskManagerPro.TaskMasterPro.Application.DTOs.Auth;
 using TaskManagerPro.TaskMasterPro.Domain;
-using TaskManagerPro.TaskMasterPro.Domain.Interfaces; // Para IRefreshTokenRepository
-using TaskManagerPro.TaskMasterPro.Infrastructure.Auth;
+using TaskManagerPro.TaskMasterPro.Domain.Interfaces;
+// Para ITokenService
+// Para IRefreshTokenRepository
 // Borramos las referencias a implementaciones concretas de la infraestructura aquí si no se usan
 using Task = System.Threading.Tasks.Task;
 
-namespace TaskManagerPro.TaskMasterPro.Application.Services;
+namespace TaskManagerPro.Application.Services;
 
 public class AuthService
 {
@@ -76,7 +77,7 @@ public class AuthService
         var storedToken = await _refreshTokenRepository.GetByTokenAsync(refreshToken);
         if (storedToken!=null)
         {
-            storedToken.IsValid = true;
+            storedToken.IsValid = false;
             await _refreshTokenRepository.UpdateAsync(storedToken);
         }
     }
@@ -89,7 +90,7 @@ public class AuthService
         if (storedToken.ExpiryDate < DateTime.UtcNow) throw new Exception("the refresh token has been expired");
         var user = await _userRepository.GetByIdAsync(storedToken.UserId);
         if (user == null) throw new Exception("user doesn't found");
-        storedToken.IsValid = true;
+        storedToken.IsValid = false;
         await _refreshTokenRepository.UpdateAsync(storedToken);
         var authResponse = await _generateTokenService.GenerateTokensAsync(user);
         return authResponse;
