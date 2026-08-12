@@ -38,4 +38,15 @@ public class TaskServiceTest
         dto.Title.Should().Be("Buy bread");
         dto.Description.Should().Be("At the bakery");
     }
+
+    [Fact]
+    public async Task GetUserTasksAsync_NoTask_ReturnsEmptyList()
+    {
+        var repo = Substitute.For<ITaskRepository>();
+        var idGen = Substitute.For<IIdGenerator>();
+        repo.GetAllByUserIdAsync(Arg.Any<Guid>()).Returns(Array.Empty<TaskEntity>());
+        var sut = new TaskServices(repo, idGen);
+        var result = await sut.GetUserTasksAsync(Guid.NewGuid());
+        result.Should().BeEmpty();
+    }
 }
