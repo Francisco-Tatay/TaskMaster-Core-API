@@ -7,7 +7,6 @@ Content-Type: application/json
 
 {
   "title": "Aprender Arquitectura Hexagonal",
-  "description": "Terminar el backend con test de IA",
   "userId": 1
 }
 ###
@@ -18,7 +17,7 @@ POST {{TaskManagerPro_HostAddress}}/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "paco.ingeniero@test.com",
+  "email": "test@gmail.com",
   "password": "Password123!",
   "passwordverfication": "Password123!"
 }
@@ -29,7 +28,7 @@ POST {{TaskManagerPro_HostAddress}}/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "paco.ingeniero@spain.com",
+  "email": "test@gmailcom",
   "password": "Password123!"
 }
 

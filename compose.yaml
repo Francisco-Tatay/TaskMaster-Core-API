@@ -1,0 +1,10 @@
+﻿services:
+  db:
+    image: mariadb:12.3
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpassword
+      MARIADB_DATABASE: taskManagerDb
+      MARIADB_USER: taskuser
+      MARIADB_PASSWORD: taskpass
+    ports:
+      - "3306:3306"

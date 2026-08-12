@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagerPro.Application.Services;
 using TaskManagerPro.TaskMasterPro.Application.DTOs.Auth;
