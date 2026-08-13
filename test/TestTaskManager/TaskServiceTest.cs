@@ -1,11 +1,11 @@
-﻿using FluentAssertions;
+﻿using Shouldly;
 using NSubstitute;
 using TaskManagerPro.Application.DTOs.Tasks;
 using TaskManagerPro.TaskManagerPro.Interfaces;
 using TaskManagerPro.TaskMasterPro.Application.Services;
 using TaskEntity = TaskManagerPro.TaskMasterPro.Domain.Task;
 
-namespace TaskManagerPro.test.TestTaskManager;
+namespace TestTaskManager;
 
 public class TaskServiceTest
 {
@@ -32,11 +32,11 @@ public class TaskServiceTest
         var result = await sut.GetUserTasksAsync(Guid.NewGuid());
 
         // ASSERT
-        result.Should().HaveCount(1);
+        result.Count().ShouldBe(1);
         var dto = result.First();
-        dto.Id.Should().Be(fakeTask.Id);
-        dto.Title.Should().Be("Buy bread");
-        dto.Description.Should().Be("At the bakery");
+        dto.Id.ShouldBe(fakeTask.Id);
+        dto.Title.ShouldBe("Buy bread");
+        dto.Description.ShouldBe("At the bakery");
     }
 
     [Fact]
@@ -47,6 +47,33 @@ public class TaskServiceTest
         repo.GetAllByUserIdAsync(Arg.Any<Guid>()).Returns(Array.Empty<TaskEntity>());
         var sut = new TaskServices(repo, idGen);
         var result = await sut.GetUserTasksAsync(Guid.NewGuid());
-        result.Should().BeEmpty();
+        result.ShouldBeEmpty();
+    }
+
+    [Fact]
+    public async Task CreateTaskAsync_ValidateData_AddsEntityWithNewId()
+    {
+        //arrange
+        var repo = Substitute.For<ITaskRepository>();
+        var idGen = Substitute.For<IIdGenerator>();
+        var expectedId = Guid.NewGuid();
+        idGen.NewId().Returns(expectedId);
+        var sut = new TaskServices(repo, idGen);
+        var userId = Guid.NewGuid();
+        //act 
+        await sut.CreateTaskAsync(new TaskItemDto(Guid.Empty, "test", "description"), userId);
+        //assert
+        await repo.Received(1).AddAsync(Arg.Is<TaskEntity>(t =>
+            t.Id == expectedId && t.UserId == userId && t.Title == "test" && !t.IsCompleted));
+    }
+
+    [Fact]
+    public async Task UpdateTaskAync_ValidateData_UpdatesEntity()
+    {
+        var repo = Substitute.For<ITaskRepository>();
+        var idgen = Substitute.For<IIdGenerator>();
+        var expectedId = Guid.NewGuid();
+        idgen.NewId().Returns(expectedId);
+        var sut = new TaskServices(repo, idgen);
     }
 }
