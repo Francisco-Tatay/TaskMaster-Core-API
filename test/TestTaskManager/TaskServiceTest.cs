@@ -70,10 +70,39 @@ public class TaskServiceTest
     [Fact]
     public async Task UpdateTaskAync_ValidateData_UpdatesEntity()
     {
+        //arrange
         var repo = Substitute.For<ITaskRepository>();
         var idgen = Substitute.For<IIdGenerator>();
         var expectedId = Guid.NewGuid();
         idgen.NewId().Returns(expectedId);
         var sut = new TaskServices(repo, idgen);
+        repo.GetByIdAsync(expectedId).Returns(new TaskEntity { Id = expectedId, Description = "test", Title = "hola" });
+        //act 
+        await sut.UpdateTaskAsync(new TaskItemDto(expectedId, "test", "description"));
+        //assert
+        await repo.Received(1)
+            .UpdateAsync(Arg.Is<TaskEntity>(t => t.Title == "test" && t.Description == "description"));
+    }
+
+    [Fact]
+    public async Task UpdateTaskAsync_TaskNotFound_DoesNotCallUpdate()
+    {
+        //arrange : el repo dice que no existe ninguna tarea explicitamente
+        var repo = Substitute.For<ITaskRepository>();
+        repo.GetByIdAsync(Arg.Any<Guid>()).Returns((TaskEntity?)null);
+        var sut = new TaskServices(repo, Substitute.For<IIdGenerator>());
+        //act intenta actualizr la tarea inesistente 
+        await sut.UpdateTaskAsync(new TaskItemDto(Guid.NewGuid(), "x", null));
+        await repo.DidNotReceive().UpdateAsync(Arg.Any<TaskEntity>());
+    }
+
+    [Fact]
+    public async Task DeleteTaskAsync_ValidId_CallsDeleteOnRepository()
+    {
+        var repo = Substitute.For<ITaskRepository>();
+        var sut = new TaskServices(repo, Substitute.For<IIdGenerator>());
+        var id = Guid.NewGuid();
+        await sut.DeleteTaskAsync(id);
+        await repo.Received(1).DeleteAsync(id);
     }
 }
