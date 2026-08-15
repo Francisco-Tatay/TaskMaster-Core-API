@@ -1,6 +1,8 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/CodeInspection/Highlighting/SweaWarningsMode/@EntryValue">ShowAndRun</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=81465429_002D3d75_002D4608_002D868a_002De519393ec764/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="CreateTaskAsync_ValidateData_AddsEntityWithNewId" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::1F710D52-4169-471D-80AF-28EAFBA80E9A::net10.0::TestTaskManager.TaskServiceTest.CreateTaskAsync_ValidateData_AddsEntityWithNewId&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::1F710D52-4169-471D-80AF-28EAFBA80E9A::net10.0::TestTaskManager.AuthServiceTest.Register_PasswordsDoNotMatch_Return_Null&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

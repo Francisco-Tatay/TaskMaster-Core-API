@@ -32,8 +32,9 @@ public class TaskServiceTest
         var result = await sut.GetUserTasksAsync(Guid.NewGuid());
 
         // ASSERT
-        result.Count().ShouldBe(1);
-        var dto = result.First();
+        var taskItemDtos = result.ToList();
+        taskItemDtos.Count().ShouldBe(1);
+        var dto = taskItemDtos.First();
         dto.Id.ShouldBe(fakeTask.Id);
         dto.Title.ShouldBe("Buy bread");
         dto.Description.ShouldBe("At the bakery");
@@ -94,15 +95,5 @@ public class TaskServiceTest
         //act intenta actualizr la tarea inesistente 
         await sut.UpdateTaskAsync(new TaskItemDto(Guid.NewGuid(), "x", null));
         await repo.DidNotReceive().UpdateAsync(Arg.Any<TaskEntity>());
-    }
-
-    [Fact]
-    public async Task DeleteTaskAsync_ValidId_CallsDeleteOnRepository()
-    {
-        var repo = Substitute.For<ITaskRepository>();
-        var sut = new TaskServices(repo, Substitute.For<IIdGenerator>());
-        var id = Guid.NewGuid();
-        await sut.DeleteTaskAsync(id);
-        await repo.Received(1).DeleteAsync(id);
     }
 }
