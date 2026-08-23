@@ -1,4 +1,4 @@
-﻿namespace TaskManagerPro.TaskMasterPro.Application.Common.Model;
+﻿namespace TaskManagerPro.Application.Common.Model;
 
 public record PageResponse<T>(
     List<T> Items,

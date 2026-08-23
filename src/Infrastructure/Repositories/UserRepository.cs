@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.EntityFrameworkCore;
+using TaskManagerPro.Application.Common.Interfaces;
 using TaskManagerPro.TaskManagerPro.Interfaces;
 using TaskManagerPro.TaskMasterPro.Application.DTOs.Auth;
 using TaskManagerPro.TaskMasterPro.Domain;

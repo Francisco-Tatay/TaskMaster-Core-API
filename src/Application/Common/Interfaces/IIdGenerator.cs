@@ -1,4 +1,4 @@
-﻿namespace TaskManagerPro.TaskManagerPro.Interfaces;
+﻿namespace TaskManagerPro.Application.Common.Interfaces;
 
 public interface IIdGenerator
 {

@@ -1,4 +1,5 @@
-﻿using TaskManagerPro.TaskManagerPro.Interfaces;
+﻿using TaskManagerPro.Application.Common.Interfaces;
+using TaskManagerPro.TaskManagerPro.Interfaces;
 
 namespace TaskManagerPro.TaskMasterPro.Infrastructure.Common;
 

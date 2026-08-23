@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using TaskManagerPro.TaskMasterPro.Application.Common.Interfaces;
+using TaskManagerPro.Application.Common.Interfaces;
 using TaskManagerPro.TaskMasterPro.Application.DTOs.Auth;
 using TaskManagerPro.TaskMasterPro.Domain;
 using TaskManagerPro.TaskMasterPro.Domain.Interfaces;

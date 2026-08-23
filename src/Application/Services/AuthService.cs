@@ -1,5 +1,5 @@
-﻿using TaskManagerPro.TaskManagerPro.Interfaces;
-using TaskManagerPro.TaskMasterPro.Application.Common.Interfaces;
+﻿using TaskManagerPro.Application.Common.Interfaces;
+using TaskManagerPro.TaskManagerPro.Interfaces;
 using TaskManagerPro.TaskMasterPro.Application.DTOs.Auth;
 using TaskManagerPro.TaskMasterPro.Domain;
 using TaskManagerPro.TaskMasterPro.Domain.Interfaces;

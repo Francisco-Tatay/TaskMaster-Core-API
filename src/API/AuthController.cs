@@ -1,12 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagerPro.Application.Services;
 using TaskManagerPro.TaskMasterPro.Application.DTOs.Auth;
-using TaskManagerPro.TaskMasterPro.Application.Services;
 
-
-namespace TaskManagerPro.TaskMasterPro.API;
+namespace TaskManagerPro.API;
 
 [ApiController]
 [Route("/api/[controller]")]

@@ -1,10 +1,11 @@
 ﻿using Shouldly;
 using NSubstitute;
+using TaskManagerPro.Application.Common.Interfaces;
 using
     TaskManagerPro.TaskMasterPro.Application.DTOs.Auth; // RegisterRecordDto, LoginRequestDto, AuthResponseDto, AuthRecordDto
 using TaskManagerPro.TaskMasterPro.Domain; // User, RefreshToken (aquí no hay conflicto con "Task")
 using TaskManagerPro.TaskMasterPro.Domain.Interfaces; // IUserRepository, IRefreshTokenRepository
-using TaskManagerPro.TaskMasterPro.Application.Common.Interfaces; // ITokenService
+// ITokenService
 using TaskManagerPro.TaskManagerPro.Interfaces; // IPasswordHasher
 using TaskManagerPro.Application.Services;
 

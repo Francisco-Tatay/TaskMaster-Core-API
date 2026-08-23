@@ -32,4 +32,8 @@
         <None Remove="test\**" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="ngnix\" />
+    </ItemGroup>
+
 </Project>
